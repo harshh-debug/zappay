@@ -14,5 +14,15 @@ model User {
   fname      String
   lname      String? @db.VarChar(50)
   password   String  @db.VarChar(72)
+  username   String  @unique @db.VarChar(30)
+  account    Account?
   
+}
+
+model Account{
+  id        Int      @id @default(autoincrement())
+  balance   BigInt
+  userId    Int  @unique
+  user      User @relation(fields: [userId], references: [id],onDelete: Cascade)
+    
 }

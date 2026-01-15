@@ -21,7 +21,7 @@ export const loginUser = async (req: Request, res: Response) => {
 		}
 		const user = await prisma.user.findFirst({
 			where: {
-				email: result.data.email,
+				username: result.data.username,
 			},
 		});
 		if (!user) {
@@ -40,6 +40,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
 		const token = jwt.sign(
 			{
+				id: user.id,
+				username: user.username,
 				email: user.email,
 				fname: user.fname,
 				lname: user.lname,
@@ -70,11 +72,11 @@ export const signupUser = async (req: Request, res: Response) => {
 				message: "Required fields missing or incorrect input",
 			});
 		}
-		const { email, fname, lname, password } = result.data;
+		const { username, email, fname, lname, password } = result.data;
 
 		const userExists = await prisma.user.findUnique({
 			where: {
-				email: email,
+				username: username,
 			},
 		});
 		if (userExists) {
@@ -86,6 +88,7 @@ export const signupUser = async (req: Request, res: Response) => {
 		const hashedPass = await bcrypt.hash(password, 10);
 		const user = await prisma.user.create({
 			data: {
+				username: username,
 				email: email,
 				fname: fname,
 				lname: lname,
@@ -95,6 +98,8 @@ export const signupUser = async (req: Request, res: Response) => {
 
 		const token = jwt.sign(
 			{
+				id: user.id,
+				username: user.username,
 				email: user.email,
 				fname: user.fname,
 				lname: user.lname,
@@ -103,6 +108,13 @@ export const signupUser = async (req: Request, res: Response) => {
 			{ expiresIn: "60m" }
 		);
 		if (user) {
+			await prisma.account.create({
+				data: {
+					balance: 1000,
+					userId: user.id,
+				},
+			});
+
 			return res.json({
 				success: true,
 				message: "User created sucessfully",
@@ -137,21 +149,73 @@ export const updateUser = async (req: Request, res: Response) => {
 				message: "Invalid payload",
 			});
 		}
-		const hashedPass = await bcrypt.hash(password, 10);
+		const updateData: {
+			fname?: string;
+			lname?: string;
+			password?: string;
+		} = {};
+		if (fname) updateData.fname = fname;
+		if (lname) updateData.lname = lname;
+		if (password) {
+			updateData.password = await bcrypt.hash(password, 10);
+		}
 		const updated = await prisma.user.update({
 			where: {
 				email: email,
 			},
-			data: {
-				fname: fname,
-				lname: lname,
-				password: hashedPass,
-			},
+			data: updateData,
 		});
 		if (updated) {
 			return res.status(200).json({
 				success: true,
 				message: "User updated successfully",
+			});
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			success: false,
+			message: "Internal server error",
+		});
+	}
+};
+
+export const searchUser = async (req: Request, res: Response) => {
+	try {
+		const filter = req.query.filter || "";
+		if (typeof filter !== "string") {
+			return res.json({
+				success: false,
+				message: "Invalid filter parameter",
+			});
+		}
+		const users = await prisma.user.findMany({
+			where: {
+				OR: [
+					{
+						fname: {
+							contains: filter,
+							mode: "insensitive",
+						},
+					},
+					{
+						lname: {
+							contains: filter,
+							mode: "insensitive",
+						},
+					},
+				],
+			},
+		});
+		if (users) {
+			return res.json({
+				success: true,
+				data: users.map((user) => ({
+					fname: user.fname,
+					lname: user.lname,
+					email: user.email,
+					id: user.id,
+				})),
 			});
 		}
 	} catch (error) {

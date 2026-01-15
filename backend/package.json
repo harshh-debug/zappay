@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc -b && node ./dist/index.js"
+    "dev": "tsc -b && node ./dist/index.js",
+    "prisma": "prisma --config prisma.config.ts",
+    "prisma:generate": "prisma generate --config prisma.config.ts",
+    "prisma:migrate": "prisma migrate dev --config prisma.config.ts"
   },
   "keywords": [],
   "author": "",
