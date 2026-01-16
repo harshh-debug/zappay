@@ -21,7 +21,7 @@ model User {
 
 model Account{
   id        Int      @id @default(autoincrement())
-  balance   BigInt
+  balance   Int
   userId    Int  @unique
   user      User @relation(fields: [userId], references: [id],onDelete: Cascade)
     

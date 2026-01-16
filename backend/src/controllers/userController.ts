@@ -67,6 +67,7 @@ export const signupUser = async (req: Request, res: Response) => {
 		const body = req.body;
 		const result = signupSchema.safeParse(body);
 		if (!result.success) {
+			console.log(result)
 			return res.json({
 				success: false,
 				message: "Required fields missing or incorrect input",

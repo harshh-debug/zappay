@@ -5,5 +5,5 @@ export const signupSchema =z.object({
     email:z.email(),
     fname:z.string(),
     lname:z.string(),
-    password:z.string().length(6)
+    password:z.string().min(6)
 })
