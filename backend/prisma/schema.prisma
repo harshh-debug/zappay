@@ -14,7 +14,6 @@ model User {
   fname      String
   lname      String? @db.VarChar(50)
   password   String  @db.VarChar(72)
-  username   String  @unique @db.VarChar(30)
   account    Account?
   
 }

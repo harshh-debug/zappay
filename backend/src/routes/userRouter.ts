@@ -7,7 +7,7 @@ const userRouter=express.Router()
 userRouter.post("/sign-up",signupUser)
 userRouter.post("/sign-in",loginUser)
 userRouter.put("/update",authMiddleware,updateUser)
-userRouter.get("/bulk",searchUser)
+userRouter.get("/bulk",authMiddleware,searchUser)
 
 
 
