@@ -13,8 +13,10 @@ const Signup = () => {
 	const [lname, setlname] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const[loading,setLoading]=useState(false)
 
 	async function handleSignup() {
+		setLoading(true)
 		try {
 			const response=await axiosClient.post("/user/sign-up", {
 				fname,
@@ -58,7 +60,7 @@ const Signup = () => {
 						label="Password"
 						placeholder="*******"
 					></InputBox>
-					<Button label="Sign-up" onClick={handleSignup}></Button>
+					<Button disabled={loading} label={loading ? 'Signing up...' : 'Sign up'} onClick={handleSignup}></Button>
 					<BottomWarning
 						label="Already have an account? "
 						linkText="Sign in"

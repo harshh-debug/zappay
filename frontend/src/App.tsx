@@ -3,19 +3,34 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import SendMoney from "./pages/SendMoney";
 import Signin from "./pages/Signin";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AuthRedirect from "./components/AuthRedirect";
 
 const App = () => {
 	return (
-		<>
-	
-				<Routes>
-          <Route path="/sign-up" element={<Signup></Signup>}></Route>
-          <Route path="/sign-in" element={<Signin></Signin>}></Route>
-          <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
-          <Route path="/send" element={<SendMoney></SendMoney>}></Route>
+		<Routes>
+			<Route path="/" element={<AuthRedirect />} />
 
-        </Routes>
-		</>
+			<Route path="/sign-up" element={<Signup />} />
+			<Route path="/sign-in" element={<Signin />} />
+
+			<Route
+				path="/dashboard"
+				element={
+					<ProtectedRoute>
+						<Dashboard />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/send"
+				element={
+					<ProtectedRoute>
+						<SendMoney />
+					</ProtectedRoute>
+				}
+			/>
+		</Routes>
 	);
 };
 

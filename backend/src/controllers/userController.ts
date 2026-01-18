@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { prisma } from "../lib/prisma.js";
 import { signupSchema } from "../schemas/signup-schema.js";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 import { signinSchema } from "../schemas/signin-schema.js";
 import { updateUserSchema } from "../schemas/update-user-schema.js";
 const jwtSecret = process.env.JWT_SECRET;
@@ -232,3 +232,4 @@ export const searchUser = async (req: Request, res: Response) => {
 		});
 	}
 };
+

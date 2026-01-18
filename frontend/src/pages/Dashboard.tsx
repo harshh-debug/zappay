@@ -20,11 +20,11 @@ const Dashboard = () => {
       }
 		}
     getBalance()
-	},[userBalance]);
+	},[]);
 	return (
 		<div>
 			<AppBar></AppBar>
-			<div className="m-8">
+			<div className="m-3">
 				<Balance value={userBalance}></Balance>
 			</div>
 			<Users></Users>

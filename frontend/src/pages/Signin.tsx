@@ -10,20 +10,26 @@ import { useNavigate } from "react-router";
 const Signin = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const[loading,setLoading]=useState(false)
 	const navigate=useNavigate()
 	async function handleSignin() {
+		setLoading(true)
 		try {
 			const res=await axiosClient.post("/user/sign-in", {
 				email,
 				password,
 			});
 			if(res.data.success){
+				setLoading(false)
 				navigate("/dashboard")
 			}else{
 				console.log(res.data.message)
 			}
 		} catch (err) {
 			console.error(err);
+		}
+		finally{
+			setLoading(false)
 		}
 	}
 	return (
@@ -34,9 +40,9 @@ const Signin = () => {
 					<SubHeading label="Enter your credentials to access your account"></SubHeading>
 					<InputBox onChange={(e)=>setEmail(e.target.value)} label="email" placeholder="Your email"></InputBox>
 					<InputBox onChange={(e)=>setPassword(e.target.value)} label="Password" placeholder="Your password"></InputBox>
-					<Button label="Sign-in" onClick={handleSignin}></Button>
+					<Button disabled={loading} label={loading ? 'Signing in...' : 'Sign in'} onClick={handleSignin}></Button>
 					<BottomWarning
-						label="Don't have an account? "
+						label={"Don't have an account? "}
 						linkText="Sign up"
 						to="/sign-up"
 					></BottomWarning>

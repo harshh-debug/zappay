@@ -38,9 +38,9 @@ export const Users = () => {
 
 	return (
 		<>
-			<div className="font-bold mt-6 text-lg">Users</div>
-			<div className="my-2">
-				<input onChange={e=>setFilter(e.target.value)} type="text" placeholder="Search users..." className="w-full px-2 border rounded border-slate-200" />
+			<div className="font-bold mt-6 text-lg ml-3">Users</div>
+			<div className="my-2 ml-2">
+				<input onChange={e=>setFilter(e.target.value)} type="text" placeholder="Search users..." className="w-full px-2 border rounded border-slate-200 p-1 focus:outline-none" />
 			</div>
 			<div>
 				{users.map((user,index)=><User user={user} key={index}></User>)}
