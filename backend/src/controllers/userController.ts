@@ -5,6 +5,7 @@ import { signupSchema } from "../schemas/signup-schema.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { signinSchema } from "../schemas/signin-schema.js";
 import { updateUserSchema } from "../schemas/update-user-schema.js";
+import type { User } from "../generated/prisma/client.js";
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
 	throw new Error("JWT_SECRET is not defined");
@@ -216,7 +217,7 @@ export const searchUser = async (req: Request, res: Response) => {
 		if (users) {
 			return res.json({
 				success: true,
-				data: users.map((user) => ({
+				data: users.map((user:User) => ({
 					fname: user.fname,
 					lname: user.lname,
 					email: user.email,
