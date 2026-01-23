@@ -52,8 +52,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
 		res.cookie("accessToken", token, {
 			httpOnly: true,
-			sameSite: "lax",
-			secure: process.env.NODE_ENV === "production",
+			sameSite: "none",
+			secure: true,
 		});
 
 		return res.json({
@@ -121,8 +121,8 @@ export const signupUser = async (req: Request, res: Response) => {
 
 		res.cookie("accessToken", token, {
 			httpOnly: true,
-			sameSite: "lax",
-			secure: process.env.NODE_ENV === "production",
+			sameSite: "none",
+			secure: true,
 		});
 
 		return res.json({
