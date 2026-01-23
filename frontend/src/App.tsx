@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRedirect from "./components/AuthRedirect";
 
 const App = () => {
+
 	return (
 		<Routes>
 			<Route path="/" element={<AuthRedirect />} />
