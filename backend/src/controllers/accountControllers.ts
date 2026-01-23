@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
-
+import type { Prisma } from "../generated/prisma/client.js";
 
 export const getBalance = async (req: Request, res: Response) => {
 	try {
@@ -47,7 +47,7 @@ export const transferFund = async (req: Request, res: Response) => {
 			});
 		}
 
-		await prisma.$transaction(async (tx) => {
+		await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 			const fromAccount = await tx.account.findUnique({
 				where: {
 					userId: userId,
